@@ -1,0 +1,1 @@
+enum TrainingMode { practice, timedTest }

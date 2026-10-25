@@ -1,30 +1,61 @@
-// This is a basic Flutter widget test.
-//
-// To perform an interaction with a widget in your test, use the WidgetTester
-// utility in the flutter_test package. For example, you can send tap and scroll
-// gestures. You can also use WidgetTester to find child widgets in the widget
-// tree, read text, and verify that the values of widget properties are correct.
-
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-
-import 'package:defense_psycho_tech_train/main.dart';
+import 'package:defense_psycho_tech_train/app/app.dart';
 
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
-    await tester.pumpWidget(const MyApp());
+  testWidgets('home offers the two training modes and history', (tester) async {
+    await tester.pumpWidget(const BtcaApp());
 
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
+    expect(find.text('Mode Entraînement'), findsOneWidget);
+    expect(find.text('Mode Test'), findsOneWidget);
+    expect(find.text('Historique et statistiques'), findsOneWidget);
+  });
 
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
-    await tester.pump();
+  testWidgets('practice mode opens the five-test selection', (tester) async {
+    await tester.pumpWidget(const BtcaApp());
 
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
+    await tester.tap(find.text('Mode Entraînement'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Choisis un test'), findsOneWidget);
+    for (final title in [
+      'Aisance numérique',
+      'Orientation spatiale',
+      'Mémoire des mots',
+      'Raisonnement',
+      'Détection d’erreurs',
+    ]) {
+      final testTitle = find.text(title);
+      await tester.scrollUntilVisible(
+        testTitle,
+        250,
+        scrollable: find.byType(Scrollable),
+      );
+      expect(testTitle, findsOneWidget);
+    }
+  });
+
+  testWidgets('selecting a test opens its overview', (tester) async {
+    await tester.pumpWidget(const BtcaApp());
+
+    await tester.tap(find.text('Mode Test'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Aisance numérique'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Test chronométré'), findsOneWidget);
+    expect(find.text('Déroulement'), findsOneWidget);
+    expect(find.text('Les exercices seront ajoutés ensuite'), findsOneWidget);
+  });
+
+  testWidgets('history opens an honest empty state', (tester) async {
+    await tester.pumpWidget(const BtcaApp());
+
+    final historyButton = find.text('Historique et statistiques');
+    await tester.ensureVisible(historyButton);
+    await tester.tap(historyButton);
+    await tester.pumpAndSettle();
+
+    expect(find.text('Aucune session enregistrée'), findsOneWidget);
   });
 }
