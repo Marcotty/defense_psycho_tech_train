@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../app/models/training_mode.dart';
+import '../../history/data/session_history_repository.dart';
 import '../../session/domain/session_exercise.dart';
 import '../../session/presentation/session_runner_page.dart';
 import '../data/error_detection_repository.dart';
@@ -51,7 +52,9 @@ class _ErrorDetectionPracticePageState
                     const SizedBox(height: 16),
                     FilledButton(
                       onPressed: () {
-                        setState(() => _exercises = _loadExercises());
+                        setState(() {
+                          _exercises = _loadExercises();
+                        });
                       },
                       child: const Text('Réessayer'),
                     ),
@@ -72,6 +75,8 @@ class _ErrorDetectionPracticePageState
           title: 'Détection d’erreurs',
           mode: TrainingMode.practice,
           exercises: snapshot.requireData,
+          onCompleted: (result) =>
+              const SessionHistoryRepository().saveSession(result),
         );
       },
     );

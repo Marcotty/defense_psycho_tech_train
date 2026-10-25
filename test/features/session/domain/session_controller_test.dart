@@ -60,6 +60,17 @@ void main() {
       expect(session.totalResponseTime, const Duration(seconds: 3));
     });
 
+    test('timed out unanswered exercises count against the final accuracy', () {
+      final session = SessionController(
+        mode: TrainingMode.timedTest,
+        exercises: [_exercise('first'), _exercise('second')],
+      )..endTimedSession();
+
+      expect(session.phase, SessionPhase.completed);
+      expect(session.answers, isEmpty);
+      expect(session.accuracy, 0);
+    });
+
     test('rejects empty or malformed exercise lists', () {
       expect(
         () => SessionController(mode: TrainingMode.practice, exercises: []),

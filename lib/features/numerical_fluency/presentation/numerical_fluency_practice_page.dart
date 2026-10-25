@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../app/models/training_mode.dart';
+import '../../history/data/session_history_repository.dart';
 import '../../session/domain/session_exercise.dart';
 import '../../session/presentation/session_runner_page.dart';
 import '../data/numerical_exercise_repository.dart';
@@ -78,6 +79,8 @@ class _NumericalFluencyPracticePageState
           title: 'Aisance numérique',
           mode: TrainingMode.practice,
           exercises: snapshot.requireData,
+          onCompleted: (result) =>
+              const SessionHistoryRepository().saveSession(result),
         );
       },
     );

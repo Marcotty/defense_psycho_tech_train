@@ -51,7 +51,10 @@ class SessionController {
 
   int get correctCount => _answers.where((answer) => answer.isCorrect).length;
 
-  double get accuracy => _answers.isEmpty ? 0 : correctCount / _answers.length;
+  double get accuracy => _answers.isEmpty
+      ? 0
+      : correctCount /
+            (mode == TrainingMode.timedTest ? questionCount : _answers.length);
 
   Duration get totalResponseTime => _answers.fold(
     Duration.zero,
@@ -98,6 +101,14 @@ class SessionController {
   void continueAfterFeedback() {
     _expectPhase(SessionPhase.feedback);
     _advanceOrComplete();
+  }
+
+  void endTimedSession() {
+    if (mode != TrainingMode.timedTest) {
+      throw StateError('Only timed sessions can end when their timer expires.');
+    }
+    if (_phase == SessionPhase.completed) return;
+    _phase = SessionPhase.completed;
   }
 
   void _advanceOrComplete() {

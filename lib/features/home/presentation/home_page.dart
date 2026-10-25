@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../app/presentation/app_drawer.dart';
 import '../../../app/models/training_mode.dart';
 import '../../history/presentation/history_page.dart';
 import '../../test_selection/presentation/test_selection_page.dart';
@@ -25,6 +26,7 @@ class HomePage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(title: const Text('BTCA')),
+      drawer: const AppDrawer(),
       body: SafeArea(
         child: LayoutBuilder(
           builder: (context, _) {

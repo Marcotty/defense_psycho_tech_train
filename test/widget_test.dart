@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:defense_psycho_tech_train/app/app.dart';
 
 void main() {
+  setUp(() => SharedPreferences.setMockInitialValues({}));
+
   testWidgets('home offers the two training modes and history', (tester) async {
     await tester.pumpWidget(const BtcaApp());
 
@@ -45,7 +48,7 @@ void main() {
 
     expect(find.text('Test chronométré'), findsOneWidget);
     expect(find.text('Déroulement'), findsOneWidget);
-    expect(find.text('Contenu en préparation'), findsOneWidget);
+    expect(find.text('Commencer le test'), findsOneWidget);
   });
 
   testWidgets('history opens an honest empty state', (tester) async {
@@ -57,5 +60,89 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.text('Aucune session enregistrée'), findsOneWidget);
+  });
+
+  testWidgets('settings are reachable from the app menu', (tester) async {
+    await tester.pumpWidget(const BtcaApp());
+    await tester.tap(find.byTooltip('Open navigation menu'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Paramètres'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Apparence'), findsOneWidget);
+    expect(find.text('Mode Test'), findsOneWidget);
+    await tester.tap(find.text('Sombre'));
+    await tester.pumpAndSettle();
+    expect(
+      Theme.of(tester.element(find.text('Apparence'))).brightness,
+      Brightness.dark,
+    );
+    await tester.pumpWidget(const SizedBox.shrink());
+    await tester.pumpWidget(const BtcaApp());
+    await tester.pumpAndSettle();
+    expect(
+      Theme.of(tester.element(find.text('BTCA'))).brightness,
+      Brightness.dark,
+    );
+  });
+
+  testWidgets('a configured timed test saves its result to history', (
+    tester,
+  ) async {
+    await tester.pumpWidget(const BtcaApp());
+    await tester.tap(find.text('Mode Test'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Aisance numérique'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Commencer le test'));
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text('Ouvrir les paramètres'));
+    await tester.pumpAndSettle();
+    final timeLimitField = find.byWidgetPredicate(
+      (widget) =>
+          widget is TextField &&
+          widget.decoration?.labelText == 'Aisance numérique',
+    );
+    await tester.enterText(timeLimitField, '30');
+    final saveDurationsButton = find.text('Enregistrer les durées');
+    await tester.scrollUntilVisible(
+      saveDurationsButton,
+      300,
+      scrollable: find.byType(Scrollable).first,
+    );
+    await tester.tap(find.text('Enregistrer les durées'));
+    await tester.pumpAndSettle();
+    expect(find.text('Limites enregistrées.'), findsOneWidget);
+    tester.testTextInput.hide();
+    await tester.pump();
+    await tester.pageBack();
+    await tester.pump(const Duration(milliseconds: 500));
+    await tester.pump();
+
+    expect(find.text('Afficher la question'), findsOneWidget);
+    for (final answer in ['Haut', 'Bas', 'Égal']) {
+      await tester.tap(find.text('Afficher la question'));
+      await tester.pump();
+      await tester.tap(find.text(answer));
+      await tester.pump();
+    }
+
+    expect(find.text('Test réussi'), findsOneWidget);
+    await tester.pumpAndSettle();
+    await tester.pageBack();
+    await tester.pumpAndSettle();
+    await tester.pageBack();
+    await tester.pumpAndSettle();
+    await tester.pageBack();
+    await tester.pumpAndSettle();
+    final historyButton = find.text('Historique et statistiques');
+    await tester.ensureVisible(historyButton);
+    await tester.tap(historyButton);
+    await tester.pumpAndSettle();
+
+    expect(find.text('Aisance numérique'), findsOneWidget);
+    expect(find.text('Tests chronométrés réussis'), findsOneWidget);
+    expect(find.text('1 / 1'), findsOneWidget);
   });
 }

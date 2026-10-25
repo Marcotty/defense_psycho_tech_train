@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../app/models/training_mode.dart';
+import '../../history/data/session_history_repository.dart';
 import '../../session/domain/session_exercise.dart';
 import '../../session/presentation/session_runner_page.dart';
 import '../data/word_memory_repository.dart';
@@ -49,7 +50,9 @@ class _WordMemoryPracticePageState extends State<WordMemoryPracticePage> {
                     const SizedBox(height: 16),
                     FilledButton(
                       onPressed: () {
-                        setState(() => _exercises = _loadExercises());
+                        setState(() {
+                          _exercises = _loadExercises();
+                        });
                       },
                       child: const Text('Réessayer'),
                     ),
@@ -70,6 +73,8 @@ class _WordMemoryPracticePageState extends State<WordMemoryPracticePage> {
           title: 'Mémoire des mots',
           mode: TrainingMode.practice,
           exercises: snapshot.requireData,
+          onCompleted: (result) =>
+              const SessionHistoryRepository().saveSession(result),
         );
       },
     );

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:defense_psycho_tech_train/app/models/training_mode.dart';
+import 'package:defense_psycho_tech_train/features/history/domain/session_result.dart';
 import 'package:defense_psycho_tech_train/features/session/domain/session_exercise.dart';
 import 'package:defense_psycho_tech_train/features/session/presentation/session_runner_page.dart';
 
@@ -42,6 +43,7 @@ void main() {
         home: SessionRunnerPage(
           title: 'Aisance numérique',
           mode: TrainingMode.timedTest,
+          testTimeLimit: const Duration(seconds: 5),
           memorizationDuration: const Duration(seconds: 2),
           exercises: [_exercise],
         ),
@@ -70,6 +72,39 @@ void main() {
       findsNWidgets(2),
     );
   });
+
+  testWidgets(
+    'timed-out questions count as incorrect and fail the time target',
+    (tester) async {
+      SessionResult? savedResult;
+      await tester.pumpWidget(
+        MaterialApp(
+          home: SessionRunnerPage(
+            title: 'Aisance numérique',
+            mode: TrainingMode.timedTest,
+            testTimeLimit: const Duration(seconds: 2),
+            exercises: [_exercise, _exercise.copyWithId('second')],
+            onCompleted: (result) async {
+              savedResult = result;
+            },
+          ),
+        ),
+      );
+
+      await tester.tap(find.text('Afficher la question'));
+      await tester.pump();
+      await tester.tap(find.text('Bonne réponse'));
+      await tester.pump();
+      await tester.pump(const Duration(seconds: 2));
+
+      expect(find.text('Session terminée'), findsOneWidget);
+      expect(find.text('50 %'), findsOneWidget);
+      expect(find.text('Objectif non atteint'), findsOneWidget);
+      await tester.pump();
+      expect(savedResult!.correctCount, 1);
+      expect(savedResult!.questionCount, 2);
+    },
+  );
 }
 
 final _exercise = SessionExercise(
@@ -83,3 +118,14 @@ final _exercise = SessionExercise(
   correctOptionId: 'correct',
   explanation: 'Explication.',
 );
+
+extension on SessionExercise {
+  SessionExercise copyWithId(String id) => SessionExercise(
+    id: id,
+    memorizationContent: memorizationContent,
+    prompt: prompt,
+    options: options,
+    correctOptionId: correctOptionId,
+    explanation: explanation,
+  );
+}

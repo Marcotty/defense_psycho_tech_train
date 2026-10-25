@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:defense_psycho_tech_train/app/app.dart';
 import 'package:defense_psycho_tech_train/features/error_detection/data/error_detection_repository.dart';
 import 'package:defense_psycho_tech_train/features/reasoning/data/reasoning_repository.dart';
@@ -8,6 +9,7 @@ import 'package:defense_psycho_tech_train/features/word_memory/data/word_memory_
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
+  setUp(() => SharedPreferences.setMockInitialValues({}));
 
   testWidgets('completes all eight word-memory practice exercises', (
     tester,

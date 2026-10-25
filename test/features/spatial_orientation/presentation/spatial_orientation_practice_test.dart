@@ -1,7 +1,11 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:defense_psycho_tech_train/app/app.dart';
 
 void main() {
+  setUp(() => SharedPreferences.setMockInitialValues({}));
+
   testWidgets('completes all six spatial orientation practice exercises', (
     tester,
   ) async {
@@ -22,6 +26,16 @@ void main() {
       expect(
         find.text('Choisis la case qui respecte les deux règles.'),
         findsOneWidget,
+      );
+      expect(
+        find.byWidgetPredicate(
+          (widget) =>
+              widget is Icon &&
+              widget.icon == Icons.arrow_upward_rounded &&
+              widget.color == Colors.white &&
+              widget.size == 40,
+        ),
+        findsWidgets,
       );
 
       final correctTile = find.text('Case ${correctTiles[index]}');

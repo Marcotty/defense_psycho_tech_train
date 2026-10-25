@@ -3,6 +3,7 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 
 import '../../../app/models/training_mode.dart';
+import '../../history/data/session_history_repository.dart';
 import '../../session/domain/session_exercise.dart';
 import '../../session/presentation/session_runner_page.dart';
 import '../data/spatial_exercise_repository.dart';
@@ -83,6 +84,8 @@ class _SpatialOrientationPracticePageState
           exercises: [
             for (final exercise in exercises) exercise.toSessionExercise(),
           ],
+          onCompleted: (result) =>
+              const SessionHistoryRepository().saveSession(result),
           answerChoicesBuilder: (context, options, onSelected) {
             return _buildAnswerGrid(context, options, answerTiles, onSelected);
           },
@@ -165,13 +168,24 @@ class _ArrowGlyph extends StatelessWidget {
 
     return Transform.rotate(
       angle: angle,
-      child: Icon(
-        Icons.arrow_upward_rounded,
-        size: 34,
-        color: color,
-        shadows: arrow.color == ArrowColor.yellow
-            ? const [Shadow(color: Colors.black87, blurRadius: 1)]
-            : null,
+      child: Stack(
+        alignment: Alignment.center,
+        children: [
+          if (arrow.color == ArrowColor.black)
+            const Icon(
+              Icons.arrow_upward_rounded,
+              size: 40,
+              color: Colors.white,
+            ),
+          Icon(
+            Icons.arrow_upward_rounded,
+            size: 34,
+            color: color,
+            shadows: arrow.color == ArrowColor.yellow
+                ? const [Shadow(color: Colors.black87, blurRadius: 1)]
+                : null,
+          ),
+        ],
       ),
     );
   }

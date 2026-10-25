@@ -5,6 +5,7 @@ import '../../../app/models/training_mode.dart';
 import '../../error_detection/presentation/error_detection_practice_page.dart';
 import '../../numerical_fluency/presentation/numerical_fluency_practice_page.dart';
 import '../../reasoning/presentation/reasoning_practice_page.dart';
+import '../../session/presentation/timed_test_page.dart';
 import '../../spatial_orientation/presentation/spatial_orientation_practice_page.dart';
 import '../../word_memory/presentation/word_memory_practice_page.dart';
 import '../data/test_catalog.dart';
@@ -18,14 +19,6 @@ class TestOverviewPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isPractice = mode == TrainingMode.practice;
-    final hasPracticeContent =
-        isPractice &&
-        (test.type == CognitiveTestType.numericalFluency ||
-            test.type == CognitiveTestType.spatialOrientation ||
-            test.type == CognitiveTestType.wordMemory ||
-            test.type == CognitiveTestType.reasoning ||
-            test.type == CognitiveTestType.errorDetection);
-
     return Scaffold(
       appBar: AppBar(title: Text(test.title)),
       body: SafeArea(
@@ -81,11 +74,11 @@ class TestOverviewPage extends StatelessWidget {
                   ),
                   const SizedBox(height: 20),
                   FilledButton(
-                    onPressed: hasPracticeContent
-                        ? () {
-                            Navigator.of(context).push(
-                              MaterialPageRoute<void>(
-                                builder: (_) => switch (test.type) {
+                    onPressed: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute<void>(
+                          builder: (_) => isPractice
+                              ? switch (test.type) {
                                   CognitiveTestType.numericalFluency =>
                                     const NumericalFluencyPracticePage(),
                                   CognitiveTestType.spatialOrientation =>
@@ -96,15 +89,15 @@ class TestOverviewPage extends StatelessWidget {
                                     const ReasoningPracticePage(),
                                   CognitiveTestType.errorDetection =>
                                     const ErrorDetectionPracticePage(),
-                                },
-                              ),
-                            );
-                          }
-                        : null,
+                                }
+                              : TimedTestPage(testType: test.type),
+                        ),
+                      );
+                    },
                     child: Text(
-                      hasPracticeContent
+                      isPractice
                           ? 'Commencer les exercices'
-                          : 'Contenu en préparation',
+                          : 'Commencer le test',
                     ),
                   ),
                 ],
