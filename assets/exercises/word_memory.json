@@ -1,0 +1,10 @@
+[
+  { "id": "words-1", "categories": ["tool", "fish", "tool"], "words": ["Tenailles", "Cabillaud", "Sardine"] },
+  { "id": "words-2", "categories": ["tree", "tree", "metal"], "words": ["Bronze", "Sapin", "Bouleau"] },
+  { "id": "words-3", "categories": ["liquid", "country", "country"], "words": ["Diesel", "Jus", "Inde"] },
+  { "id": "words-4", "categories": ["clothing", "clothing", "clothing"], "words": ["Haricot", "Veste", "Gants"] },
+  { "id": "words-5", "categories": ["vehicle", "bird", "bird"], "words": ["Mouette", "Vélo", "Carrosse"] },
+  { "id": "words-6", "categories": ["insect", "building", "insect"], "words": ["Magasin", "Scarabée", "Moustique"] },
+  { "id": "words-7", "categories": ["fish", "fish", "fish"], "words": ["Hareng", "Crème", "Eau"] },
+  { "id": "words-8", "categories": ["tool", "tool", "tree"], "words": ["Clef", "Scie", "Chêne"] }
+]

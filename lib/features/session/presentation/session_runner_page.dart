@@ -7,12 +7,20 @@ import '../domain/session_controller.dart';
 import '../domain/session_exercise.dart';
 import '../domain/session_phase.dart';
 
+typedef SessionAnswerChoicesBuilder =
+    Widget Function(
+      BuildContext context,
+      List<SessionAnswerOption> options,
+      ValueChanged<String> onSelected,
+    );
+
 class SessionRunnerPage extends StatefulWidget {
   const SessionRunnerPage({
     required this.title,
     required this.mode,
     required this.exercises,
     this.memorizationDuration,
+    this.answerChoicesBuilder,
     super.key,
   }) : assert(
          mode == TrainingMode.practice || memorizationDuration != null,
@@ -23,6 +31,7 @@ class SessionRunnerPage extends StatefulWidget {
   final TrainingMode mode;
   final List<SessionExercise> exercises;
   final Duration? memorizationDuration;
+  final SessionAnswerChoicesBuilder? answerChoicesBuilder;
 
   @override
   State<SessionRunnerPage> createState() => _SessionRunnerPageState();
@@ -184,16 +193,19 @@ class _SessionRunnerPageState extends State<SessionRunnerPage> {
           textAlign: TextAlign.center,
         ),
         const SizedBox(height: 24),
-        for (final option in exercise.options) ...[
-          SizedBox(
-            height: 56,
-            child: OutlinedButton(
-              onPressed: () => _submitAnswer(option.id),
-              child: Text(option.label),
+        if (widget.answerChoicesBuilder case final builder?)
+          builder(context, exercise.options, _submitAnswer)
+        else
+          for (final option in exercise.options) ...[
+            SizedBox(
+              height: 56,
+              child: OutlinedButton(
+                onPressed: () => _submitAnswer(option.id),
+                child: Text(option.label),
+              ),
             ),
-          ),
-          const SizedBox(height: 12),
-        ],
+            const SizedBox(height: 12),
+          ],
       ],
     );
   }

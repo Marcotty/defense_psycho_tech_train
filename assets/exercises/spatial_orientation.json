@@ -1,0 +1,104 @@
+[
+  {
+    "id": "spatial-example-1",
+    "rules": {
+      "colorAbove": "yellow",
+      "directionAbove": "upLeft",
+      "directionBelow": "upLeft"
+    },
+    "correctTileIndex": 3,
+    "tiles": [
+      { "above": { "color": "black", "direction": "upRight" }, "below": { "color": "yellow", "direction": "upLeft" } },
+      { "above": { "color": "yellow", "direction": "upRight" }, "below": { "color": "black", "direction": "upLeft" } },
+      { "above": { "color": "yellow", "direction": "upRight" }, "below": { "color": "black", "direction": "upRight" } },
+      { "above": { "color": "yellow", "direction": "upLeft" }, "below": { "color": "black", "direction": "upLeft" } },
+      { "above": { "color": "yellow", "direction": "upLeft" }, "below": { "color": "black", "direction": "downLeft" } },
+      { "above": { "color": "black", "direction": "upLeft" }, "below": { "color": "yellow", "direction": "upLeft" } }
+    ]
+  },
+  {
+    "id": "spatial-example-2",
+    "rules": {
+      "colorAbove": "black",
+      "directionAbove": "upRight",
+      "directionBelow": "upLeft"
+    },
+    "correctTileIndex": 4,
+    "tiles": [
+      { "above": { "color": "black", "direction": "upLeft" }, "below": { "color": "yellow", "direction": "upRight" } },
+      { "above": { "color": "yellow", "direction": "upRight" }, "below": { "color": "black", "direction": "downLeft" } },
+      { "above": { "color": "black", "direction": "downRight" }, "below": { "color": "yellow", "direction": "upLeft" } },
+      { "above": { "color": "black", "direction": "upRight" }, "below": { "color": "yellow", "direction": "upRight" } },
+      { "above": { "color": "black", "direction": "upRight" }, "below": { "color": "yellow", "direction": "upLeft" } },
+      { "above": { "color": "yellow", "direction": "upRight" }, "below": { "color": "black", "direction": "upLeft" } }
+    ]
+  },
+  {
+    "id": "spatial-example-3",
+    "rules": {
+      "colorAbove": "black",
+      "directionAbove": "downRight",
+      "directionBelow": "downRight"
+    },
+    "correctTileIndex": 5,
+    "tiles": [
+      { "above": { "color": "black", "direction": "downRight" }, "below": { "color": "yellow", "direction": "upLeft" } },
+      { "above": { "color": "yellow", "direction": "downRight" }, "below": { "color": "black", "direction": "downLeft" } },
+      { "above": { "color": "black", "direction": "downLeft" }, "below": { "color": "yellow", "direction": "downRight" } },
+      { "above": { "color": "yellow", "direction": "downLeft" }, "below": { "color": "black", "direction": "upLeft" } },
+      { "above": { "color": "black", "direction": "upLeft" }, "below": { "color": "yellow", "direction": "downRight" } },
+      { "above": { "color": "black", "direction": "downRight" }, "below": { "color": "yellow", "direction": "downRight" } }
+    ]
+  },
+  {
+    "id": "spatial-example-4",
+    "rules": {
+      "colorAbove": "black",
+      "directionAbove": "downLeft",
+      "directionBelow": "upRight"
+    },
+    "correctTileIndex": 5,
+    "tiles": [
+      { "above": { "color": "black", "direction": "upRight" }, "below": { "color": "yellow", "direction": "upRight" } },
+      { "above": { "color": "yellow", "direction": "downLeft" }, "below": { "color": "black", "direction": "upLeft" } },
+      { "above": { "color": "yellow", "direction": "upRight" }, "below": { "color": "black", "direction": "upRight" } },
+      { "above": { "color": "black", "direction": "upRight" }, "below": { "color": "yellow", "direction": "downLeft" } },
+      { "above": { "color": "black", "direction": "downLeft" }, "below": { "color": "yellow", "direction": "downLeft" } },
+      { "above": { "color": "black", "direction": "downLeft" }, "below": { "color": "yellow", "direction": "upRight" } }
+    ]
+  },
+  {
+    "id": "spatial-example-5",
+    "rules": {
+      "colorAbove": "yellow",
+      "directionAbove": "upLeft",
+      "directionBelow": "upRight"
+    },
+    "correctTileIndex": 3,
+    "tiles": [
+      { "above": { "color": "yellow", "direction": "downLeft" }, "below": { "color": "black", "direction": "upRight" } },
+      { "above": { "color": "black", "direction": "downRight" }, "below": { "color": "yellow", "direction": "downRight" } },
+      { "above": { "color": "black", "direction": "upLeft" }, "below": { "color": "yellow", "direction": "upRight" } },
+      { "above": { "color": "yellow", "direction": "upLeft" }, "below": { "color": "black", "direction": "upRight" } },
+      { "above": { "color": "yellow", "direction": "downLeft" }, "below": { "color": "black", "direction": "downLeft" } },
+      { "above": { "color": "yellow", "direction": "upRight" }, "below": { "color": "black", "direction": "upLeft" } }
+    ]
+  },
+  {
+    "id": "spatial-example-6",
+    "rules": {
+      "colorAbove": "black",
+      "directionAbove": "upRight",
+      "directionBelow": "downRight"
+    },
+    "correctTileIndex": 2,
+    "tiles": [
+      { "above": { "color": "yellow", "direction": "downLeft" }, "below": { "color": "black", "direction": "downLeft" } },
+      { "above": { "color": "black", "direction": "downLeft" }, "below": { "color": "yellow", "direction": "downRight" } },
+      { "above": { "color": "black", "direction": "upRight" }, "below": { "color": "yellow", "direction": "downRight" } },
+      { "above": { "color": "black", "direction": "upRight" }, "below": { "color": "yellow", "direction": "downLeft" } },
+      { "above": { "color": "black", "direction": "upLeft" }, "below": { "color": "yellow", "direction": "downRight" } },
+      { "above": { "color": "yellow", "direction": "upRight" }, "below": { "color": "black", "direction": "upLeft" } }
+    ]
+  }
+]

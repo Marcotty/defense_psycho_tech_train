@@ -1,0 +1,82 @@
+[
+  {
+    "id": "reasoning-1",
+    "entities": ["Hélicoptère", "Ferry", "Tram"],
+    "clues": [
+      { "greater": "Ferry", "lesser": "Hélicoptère", "statement": "Hélicoptère plus lent que Ferry" },
+      { "greater": "Tram", "lesser": "Ferry", "statement": "Tram plus rapide que Ferry" }
+    ],
+    "question": "Quel est le plus rapide ?",
+    "extreme": "maximum"
+  },
+  {
+    "id": "reasoning-2",
+    "entities": ["Tram", "Camion", "Hélicoptère"],
+    "clues": [
+      { "greater": "Tram", "lesser": "Camion", "statement": "Tram plus rapide que Camion" },
+      { "greater": "Hélicoptère", "lesser": "Tram", "statement": "Hélicoptère plus rapide que Tram" }
+    ],
+    "question": "Quel est le plus lent ?",
+    "extreme": "minimum"
+  },
+  {
+    "id": "reasoning-3",
+    "entities": ["Lac", "Montagne", "Bois"],
+    "clues": [
+      { "greater": "Lac", "lesser": "Montagne", "statement": "Lac plus loin que Montagne" },
+      { "greater": "Bois", "lesser": "Lac", "statement": "Bois plus loin que Lac" }
+    ],
+    "question": "Quel est le plus loin ?",
+    "extreme": "maximum"
+  },
+  {
+    "id": "reasoning-4",
+    "entities": ["Policier", "Pompier", "Pilote"],
+    "clues": [
+      { "greater": "Policier", "lesser": "Pompier", "statement": "Policier plus grand que Pompier" },
+      { "greater": "Pompier", "lesser": "Pilote", "statement": "Pilote plus petit que Pompier" }
+    ],
+    "question": "Qui est le plus petit ?",
+    "extreme": "minimum"
+  },
+  {
+    "id": "reasoning-5",
+    "entities": ["Pont", "Église", "Arbre"],
+    "clues": [
+      { "greater": "Pont", "lesser": "Église", "statement": "Pont plus haut qu’Église" },
+      { "greater": "Arbre", "lesser": "Pont", "statement": "Arbre plus haut que Pont" }
+    ],
+    "question": "Quel est le plus bas ?",
+    "extreme": "minimum"
+  },
+  {
+    "id": "reasoning-6",
+    "entities": ["Montagne", "Bois", "Rivière"],
+    "clues": [
+      { "greater": "Bois", "lesser": "Montagne", "statement": "Montagne plus près que Bois" },
+      { "greater": "Montagne", "lesser": "Rivière", "statement": "Montagne plus loin que Rivière" }
+    ],
+    "question": "Quel est le plus près ?",
+    "extreme": "minimum"
+  },
+  {
+    "id": "reasoning-7",
+    "entities": ["Patrouille", "Régiment", "Compagnie"],
+    "clues": [
+      { "greater": "Régiment", "lesser": "Patrouille", "statement": "Patrouille à gauche de Régiment" },
+      { "greater": "Patrouille", "lesser": "Compagnie", "statement": "Patrouille à droite de Compagnie" }
+    ],
+    "question": "Quel est le plus à droite ?",
+    "extreme": "maximum"
+  },
+  {
+    "id": "reasoning-8",
+    "entities": ["Casque", "Baïonnette", "Fusil"],
+    "clues": [
+      { "greater": "Casque", "lesser": "Baïonnette", "statement": "Casque plus lourd que Baïonnette" },
+      { "greater": "Baïonnette", "lesser": "Fusil", "statement": "Fusil plus léger que Baïonnette" }
+    ],
+    "question": "Quel est le plus lourd ?",
+    "extreme": "maximum"
+  }
+]
