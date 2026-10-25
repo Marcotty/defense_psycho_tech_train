@@ -45,7 +45,7 @@ void main() {
 
     expect(find.text('Test chronométré'), findsOneWidget);
     expect(find.text('Déroulement'), findsOneWidget);
-    expect(find.text('Les exercices seront ajoutés ensuite'), findsOneWidget);
+    expect(find.text('Contenu en préparation'), findsOneWidget);
   });
 
   testWidgets('history opens an honest empty state', (tester) async {

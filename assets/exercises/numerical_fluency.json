@@ -1,0 +1,17 @@
+[
+  {
+    "id": "numeric-example-1",
+    "first": { "left": 3, "operator": "*", "right": 7 },
+    "second": { "left": 19, "operator": "-", "right": 1 }
+  },
+  {
+    "id": "numeric-example-2",
+    "first": { "left": 34, "operator": "-", "right": 1 },
+    "second": { "left": 5, "operator": "+", "right": 30 }
+  },
+  {
+    "id": "numeric-example-3",
+    "first": { "left": 4, "operator": "*", "right": 3 },
+    "second": { "left": 9, "operator": "+", "right": 3 }
+  }
+]

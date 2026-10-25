@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
+import '../../../app/models/cognitive_test_type.dart';
 import '../../../app/models/training_mode.dart';
+import '../../numerical_fluency/presentation/numerical_fluency_practice_page.dart';
 import '../data/test_catalog.dart';
 
 class TestOverviewPage extends StatelessWidget {
@@ -12,6 +14,8 @@ class TestOverviewPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isPractice = mode == TrainingMode.practice;
+    final hasPracticeContent =
+        isPractice && test.type == CognitiveTestType.numericalFluency;
 
     return Scaffold(
       appBar: AppBar(title: Text(test.title)),
@@ -67,9 +71,22 @@ class TestOverviewPage extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 20),
-                  const FilledButton(
-                    onPressed: null,
-                    child: Text('Les exercices seront ajoutés ensuite'),
+                  FilledButton(
+                    onPressed: hasPracticeContent
+                        ? () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute<void>(
+                                builder: (_) =>
+                                    const NumericalFluencyPracticePage(),
+                              ),
+                            );
+                          }
+                        : null,
+                    child: Text(
+                      hasPracticeContent
+                          ? 'Commencer les exercices'
+                          : 'Contenu en préparation',
+                    ),
                   ),
                 ],
               ),
