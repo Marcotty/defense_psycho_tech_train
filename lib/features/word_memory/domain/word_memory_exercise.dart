@@ -76,6 +76,11 @@ class WordMemoryExercise {
 
 WordCategory? categoryForWord(String word) => _wordCategories[word];
 
+List<String> wordsForCategory(WordCategory category) => [
+  for (final entry in _wordCategories.entries)
+    if (entry.value == category) entry.key,
+];
+
 const _wordCategories = <String, WordCategory>{
   'Tenailles': WordCategory.tool,
   'Cabillaud': WordCategory.fish,
@@ -101,4 +106,30 @@ const _wordCategories = <String, WordCategory>{
   'Clef': WordCategory.tool,
   'Scie': WordCategory.tool,
   'Chêne': WordCategory.tree,
+  'Marteau': WordCategory.tool,
+  'Pince': WordCategory.tool,
+  'Thon': WordCategory.fish,
+  'Saumon': WordCategory.fish,
+  'Érable': WordCategory.tree,
+  'Pin': WordCategory.tree,
+  'Fer': WordCategory.metal,
+  'Cuivre': WordCategory.metal,
+  'Zinc': WordCategory.metal,
+  'Lait': WordCategory.liquid,
+  'Huile': WordCategory.liquid,
+  'Chine': WordCategory.country,
+  'Brésil': WordCategory.country,
+  'Italie': WordCategory.country,
+  'Pantalon': WordCategory.clothing,
+  'Chemise': WordCategory.clothing,
+  'Camion': WordCategory.vehicle,
+  'Bateau': WordCategory.vehicle,
+  'Corbeau': WordCategory.bird,
+  'Hibou': WordCategory.bird,
+  'Fourmi': WordCategory.insect,
+  'Abeille': WordCategory.insect,
+  'Église': WordCategory.building,
+  'Hôpital': WordCategory.building,
+  'Carotte': WordCategory.vegetable,
+  'Poireau': WordCategory.vegetable,
 };

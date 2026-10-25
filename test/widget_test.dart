@@ -121,9 +121,25 @@ void main() {
     await tester.pump();
 
     expect(find.text('Afficher la question'), findsOneWidget);
-    for (final answer in ['Haut', 'Bas', 'Égal']) {
+    while (find.text('Afficher la question').evaluate().isNotEmpty) {
+      final memorized = tester
+          .widgetList<Text>(find.byType(Text))
+          .map((text) => text.data ?? '')
+          .firstWhere(_expression.hasMatch);
       await tester.tap(find.text('Afficher la question'));
       await tester.pump();
+      final prompt = tester
+          .widgetList<Text>(find.byType(Text))
+          .map((text) => text.data ?? '')
+          .firstWhere((text) => text.startsWith('Compare le résultat'));
+      final second = prompt.split('\n').last;
+      final first = _evaluate(memorized);
+      final other = _evaluate(second);
+      final answer = first > other
+          ? 'Haut'
+          : first < other
+          ? 'Bas'
+          : 'Égal';
       await tester.tap(find.text(answer));
       await tester.pump();
     }
@@ -145,4 +161,18 @@ void main() {
     expect(find.text('Tests chronométrés réussis'), findsOneWidget);
     expect(find.text('1 / 1'), findsOneWidget);
   });
+}
+
+final _expression = RegExp(r'^(\d+) ([+−×÷]) (\d+)$');
+
+int _evaluate(String expression) {
+  final match = _expression.firstMatch(expression.trim())!;
+  final left = int.parse(match.group(1)!);
+  final right = int.parse(match.group(3)!);
+  return switch (match.group(2)!) {
+    '+' => left + right,
+    '−' => left - right,
+    '×' => left * right,
+    _ => left ~/ right,
+  };
 }

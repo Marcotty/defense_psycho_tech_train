@@ -2,21 +2,24 @@ import 'package:flutter/material.dart';
 
 import '../../../app/models/cognitive_test_type.dart';
 import '../../../app/models/training_mode.dart';
-import '../../error_detection/data/error_detection_repository.dart';
 import '../../history/data/session_history_repository.dart';
-import '../../reasoning/data/reasoning_repository.dart';
-import '../../spatial_orientation/data/spatial_exercise_repository.dart';
+import '../../spatial_orientation/domain/spatial_exercise.dart';
+import '../../spatial_orientation/presentation/spatial_answer_grid.dart';
 import '../../test_selection/data/test_catalog.dart';
-import '../../word_memory/data/word_memory_repository.dart';
-import '../../numerical_fluency/data/numerical_exercise_repository.dart';
 import '../domain/session_exercise.dart';
+import '../domain/timed_exercise_generator.dart';
 import '../../settings/data/settings_repository.dart';
 import 'session_runner_page.dart';
 
 class TimedTestPage extends StatefulWidget {
-  const TimedTestPage({required this.testType, super.key});
+  const TimedTestPage({
+    required this.testType,
+    this.exerciseGenerator,
+    super.key,
+  });
 
   final CognitiveTestType testType;
+  final TimedExerciseGenerator? exerciseGenerator;
 
   @override
   State<TimedTestPage> createState() => _TimedTestPageState();
@@ -24,6 +27,8 @@ class TimedTestPage extends StatefulWidget {
 
 class _TimedTestPageState extends State<TimedTestPage> {
   final SettingsRepository _settingsRepository = const SettingsRepository();
+  late final TimedExerciseGenerator _exerciseGenerator =
+      widget.exerciseGenerator ?? TimedExerciseGenerator();
   late Future<_TimedTestData> _data;
 
   @override
@@ -34,28 +39,22 @@ class _TimedTestPageState extends State<TimedTestPage> {
 
   Future<_TimedTestData> _loadData() async {
     final timeLimits = await _settingsRepository.loadTestTimeLimits();
-    final exercises = await switch (widget.testType) {
-      CognitiveTestType.numericalFluency =>
-        const NumericalExerciseRepository().loadExercises().then(
-          (items) => items.map((item) => item.toSessionExercise()).toList(),
-        ),
-      CognitiveTestType.spatialOrientation =>
-        const SpatialExerciseRepository().loadExercises().then(
-          (items) => items.map((item) => item.toSessionExercise()).toList(),
-        ),
-      CognitiveTestType.wordMemory =>
-        const WordMemoryRepository().loadExercises().then(
-          (items) => items.map((item) => item.toSessionExercise()).toList(),
-        ),
-      CognitiveTestType.reasoning =>
-        const ReasoningRepository().loadExercises().then(
-          (items) => items.map((item) => item.toSessionExercise()).toList(),
-        ),
-      CognitiveTestType.errorDetection =>
-        const ErrorDetectionRepository().loadExercises().then(
-          (items) => items.map((item) => item.toSessionExercise()).toList(),
-        ),
-    };
+    final List<SessionExercise> exercises;
+    final Map<String, SpatialTile>? spatialTiles;
+    if (widget.testType == CognitiveTestType.spatialOrientation) {
+      final generated = _exerciseGenerator.generateSpatialExercises();
+      exercises = [
+        for (final exercise in generated) exercise.toSessionExercise(),
+      ];
+      spatialTiles = {
+        for (final exercise in generated)
+          for (var index = 0; index < exercise.tiles.length; index++)
+            '${exercise.id}-case-$index': exercise.tiles[index],
+      };
+    } else {
+      exercises = _exerciseGenerator.generate(widget.testType);
+      spatialTiles = null;
+    }
 
     return _TimedTestData(
       title: testCatalog
@@ -63,6 +62,7 @@ class _TimedTestPageState extends State<TimedTestPage> {
           .title,
       timeLimit: timeLimits[widget.testType],
       exercises: List.unmodifiable(exercises),
+      spatialTiles: spatialTiles,
     );
   }
 
@@ -159,6 +159,13 @@ class _TimedTestPageState extends State<TimedTestPage> {
           testTimeLimit: data.timeLimit,
           onCompleted: (result) =>
               const SessionHistoryRepository().saveSession(result),
+          answerChoicesBuilder: data.spatialTiles == null
+              ? null
+              : (context, options, onSelected) => SpatialAnswerGrid(
+                  options: options,
+                  tiles: data.spatialTiles!,
+                  onSelected: onSelected,
+                ),
         );
       },
     );
@@ -170,9 +177,11 @@ class _TimedTestData {
     required this.title,
     required this.timeLimit,
     required this.exercises,
+    required this.spatialTiles,
   });
 
   final String title;
   final Duration? timeLimit;
   final List<SessionExercise> exercises;
+  final Map<String, SpatialTile>? spatialTiles;
 }
